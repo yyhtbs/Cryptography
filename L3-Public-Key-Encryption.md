@@ -1,4 +1,4 @@
-# Discrete Logarithm Problem
+# Piblic Key Encryption Methods
 
 ## Diffe-hellman Key Exchange
 
@@ -54,7 +54,7 @@ Cock constructs a special one way function called trapdoor oneway function.
 
 Without the trapdoor, it is a one-way function (hard to inverse). Otherwise it is not (easy to inverse). 
 
-## Math
+### Math
 
 Recall DH algorithm:
 $$g ^ e \mod d$$
@@ -62,17 +62,17 @@ Here $g$ is called the base, $e$ is called the exponent and $d$ is called the mo
 
 Bob has a message $m$, it takes the exp and divides the result by the random number $N$, 
 
-$$m^e \mod N = c$$
+$$m^e \mod N \equiv c$$
 
 The one way function means given $m$, $e$ and $N$ it is easy to work out $c$. However, given $c$, $N$ and $e$, it is hard to work out $m$.
 
 **Concept UNDO:**
 
 For encryption, Alice takes the public key $e$ and $N$ from Alice to encyrpt the message $m$
-$$m^e \mod N = c$$
+$$m^e \mod N \equiv c$$
 
 For decryption, Bob takes the cipher $c$ and decrypts it using the trapdoor $d$ (another key) also known as the private key. 
-$$c^d \mod N = m \rightarrow m^{ed} \mod N = m$$
+$$c^d \mod N \equiv m \rightarrow m^{ed} \mod N \equiv m$$
 
 So the core is for Alice to find a pair of keys $e$ and $d$ that allows the lock-then-unlock operation while no one can receover $d$ from $e$ and $c$. 
 
@@ -105,9 +105,9 @@ So if we know the factors of $N$ it is easy to calculate $\Phi(N)$.
 
 For example, we have $p_1 = 7$ and $p_2 = 11$, we can easily calculate $\Phi(77) = \Phi(7) * \Phi(11) = 6 * 10 = 60$
 
-## Connection Between $\Phi$ and Modular Exponentiation
+### Euler's theorem: Connection Between $\Phi$ and Modular Exponentiation
 
-The link is the Euler's theorem: 
+For a $\Phi$ function, it has the following property:
 
 $$m^{\Phi(n)} \equiv 1 \mod n$$
 
@@ -115,9 +115,9 @@ It uses the $\Phi$ function as the exponentiation term.
 
 For example, let us have $m = 5$ and $n = 8$,
 
-$$5^{4} = 625 \rightarrow (625 \mod 4) = (1 \mod 4)$$
+$$5^{4} = 625 \rightarrow 625 \equiv 1 \mod 4$$
 
-## Some Property of This formula
+### Some Property of This formula
 
 $$m^{\Phi(n)} \equiv 1 \mod n \rightarrow \forall k \in \mathbb{Z}, m^{k*\Phi(n)} \equiv 1 \mod n$$
 
@@ -129,15 +129,16 @@ $$m^{e*d} \equiv m \mod n \rightarrow e*d = k* \Phi(n) + 1 \rightarrow d = \frac
 
 Here $d$ is the Alice's private key to undo the encryption of public key $e$.
 
-**Example: How to generate a key pair**
+### Example: How to generate a pair of RSA keys 
 
 Alice generates two keys:
 * $p_1 = 53$
 * $p_2 = 59$
 * $n = 53*59 = 3127$
 * $\Phi(n) = 52*58 = 3016$
-* $e = 3$, $e$ is small public key which should be a odd number and should not share factors with $\Phi(N)$ P.S. Not sure how to get $e$.
+* $e = 3$, $e$ is small public key which should be a odd number and should not share factors with $\Phi(N)$ 
 * $d = \frac{2 * (3016) + 1}{3} = 2011$, $d$ is the private key. 
+**P.S.** Not sure how to get $e$. Maybe it is easy to find $e$ can divide ${k* \Phi(n) + 1}$
 
 Alice hides everything except $n = 3127$ and $e = 3$, then sends $n|e$t as the public key to Bob. 
 
